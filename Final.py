@@ -1,4 +1,4 @@
-# This code is with only 1 booking link for testing 
+# Libraries to be imported 
 import streamlit as st
 import json
 import os
@@ -10,9 +10,9 @@ from datetime import datetime, timedelta
 from typing import Dict, List
 import pandas as pd
 
-# Initialize API Keys
-SERPAPI_KEY = "25c8279d21171fe0c16d330e5c0e3582a24518540bf94768595c3c3dbb114fe4"
-GOOGLE_API_KEY = "AIzaSyCOxwQ2v0iiTSvXqN-VYxQ120Wi3c70Vig"
+# Adding the API Keys
+SERPAPI_KEY = "your_serpapi_key_here"
+GOOGLE_API_KEY = "your_gemini_api_key_here"
 os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
 
 # Helper Class for URL Buttons
