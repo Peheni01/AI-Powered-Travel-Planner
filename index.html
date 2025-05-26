@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Agent App</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babel-standalone@7.22.9/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root" class="container mx-auto p-4"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [origin, setOrigin] = useState('');
+            const [destination, setDestination] = useState('');
+            const [departureDate, setDepartureDate] = useState('');
+            const [checkIn, setCheckIn] = useState('');
+            const [checkOut, setCheckOut] = useState('');
+            const [flights, setFlights] = useState([]);
+            const [hotels, setHotels] = useState([]);
+            const [itinerary, setItinerary] = useState(null);
+            const [checklistItem, setChecklistItem] = useState('');
+            const [checklist, setChecklist] = useState([]);
+
+            const fetchChecklist = async () => {
+                const response = await fetch('/api/checklist');
+                const data = await response.json();
+                setChecklist(data.checklist);
+            };
+
+            useEffect(() => {
+                fetchChecklist();
+            }, []);
+
+            const handleFlightSearch = async (e) => {
+                e.preventDefault();
+                const response = await fetch('/api/flights', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ origin, destination, departure_date: departureDate })
+                });
+                const data = await response.json();
+                setFlights(data.flights);
+            };
+
+            const handleHotelSearch = async (e) => {
+                e.preventDefault();
+                const response = await fetch('/api/hotels', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ city: destination, check_in: checkIn, check_out: checkOut })
+                });
+                const data = await response.json();
+                setHotels(data.hotels);
+            };
+
+            const handleItinerary = async (e) => {
+                e.preventDefault();
+                const response = await fetch('/api/itinerary', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ destination, start_date: checkIn, end_date: checkOut })
+                });
+                const data = await response.json();
+                setItinerary(data);
+            };
+
+            const handleAddChecklistItem = async (e) => {
+                e.preventDefault();
+                if (!checklistItem) return;
+                const response = await fetch('/api/checklist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ item: checklistItem })
+                });
+                const data = await response.json();
+                setChecklist([...checklist, data]);
+                setChecklistItem('');
+                fetchChecklist();
+            };
+
+            const handleToggleChecklist = async (itemId, checked) => {
+                await fetch(`/api/checklist/${itemId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ checked: !checked })
+                });
+                fetchChecklist();
+            };
+
+            return (
+                <div className="space-y-6">
+                    <h1 className="text-3xl font-bold text-center">Travel Agent</h1>
+
+                    {/* Flight Search */}
+                    <div className="bg-gray-100 p-4 rounded">
+                        <h2 className="text-xl font-semibold">Search Flights</h2>
+                        <div className="flex space-x-4">
+                            <input type="text" placeholder="Origin" value={origin} onChange={(e) => setOrigin(e.target.value)} className="border p-2 rounded" />
+                            <input type="text" placeholder="Destination" value={destination} onChange={(e) => setDestination(e.target.value)} className="border p-2 rounded" />
+                            <input type="date" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} className="border p-2 rounded" />
+                            <button onClick={handleFlightSearch} className="bg-blue-500 text-white p-2 rounded">Search</button>
+                        </div>
+                        {flights.length > 0 && (
+                            <div className="mt-4">
+                                <h3 className="font-semibold">Flights:</h3>
+                                <ul className="list-disc pl-5">
+                                    {flights.map((flight, index) => (
+                                        <li key={index}>{flight.flight_number}: {flight.origin} to {flight.destination}, ${flight.price}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Hotel Search */}
+                    <div className="bg-gray-100 p-4 rounded">
+                        <h2 className="text-xl font-semibold">Search Hotels</h2>
+                        <div className="flex space-x-4">
+                            <input type="text" placeholder="City" value={destination} onChange={(e) => setDestination(e.target.value)} className="border p-2 rounded" />
+                            <input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} className="border p-2 rounded" />
+                            <input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} className="border p-2 rounded" />
+                            <button onClick={handleHotelSearch} className="bg-blue-500 text-white p-2 rounded">Search</button>
+                        </div>
+                        {hotels.length > 0 && (
+                            <div className="mt-4">
+                                <h3 className="font-semibold">Hotels:</h3>
+                                <ul className="list-disc pl-5">
+                                    {hotels.map((hotel, index) => (
+                                        <li key={index}>{hotel.name}: ${hotel.price_per_night}/night</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Itinerary */}
+                    <div className="bg-gray-100 p-4 rounded">
+                        <h2 className="text-xl font-semibold">Generate Itinerary</h2>
+                        <div className="flex space-x-4">
+                            <input type="text" placeholder="Destination" value={destination} onChange={(e) => setDestination(e.target.value)} className="border p-2 rounded" />
+                            <button onClick={handleItinerary} className="bg-blue-500 text-white p-2 rounded">Generate</button>
+                        </div>
+                        {itinerary && (
+                            <div className="mt-4">
+                                <h3 className="font-semibold">Itinerary for {itinerary.destination}</h3>
+                                <p>From: {itinerary.start_date} To: {itinerary.end_date}</p>
+                                <ul className="list-disc pl-5">
+                                    {itinerary.activities.map((activity, index) => (
+                                        <li key={index}>{activity.place}: {activity.activity} (${activity.cost})</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Checklist */}
+                    <div className="bg-gray-100 p-4 rounded">
+                        <h2 className="text-xl font-semibold">Travel Checklist</h2>
+                        <div className="flex space-x-4">
+                            <input type="text" placeholder="Add item" value={checklistItem} onChange={(e) => setChecklistItem(e.target.value)} className="border p-2 rounded" />
+                            <button onClick={handleAddChecklistItem} className="bg-green-500 text-white p-2 rounded">Add</button>
+                        </div>
+                        <ul className="mt-4">
+                            {checklist.map((item) => (
+                                <li key={item.id} className="flex items-center space-x-2">
+                                    <input 
+                                        type="checkbox" 
+                                        checked={item.checked} 
+                                        onChange={() => handleToggleChecklist(item.id, item.checked)} 
+                                        className="h-5 w-5"
+                                    />
+                                    <span className={item.checked ? 'line-through' : ''}>{item.item}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
