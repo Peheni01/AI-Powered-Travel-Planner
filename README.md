@@ -1,7 +1,7 @@
-# 🌟 AI-Powered Travel Planner ✈️🌍
+# ✈️ AI-Powered Travel Planner 🌍
 Your smart travel companion — plan smarter, travel better!
 
-This intelligent travel agent leverages cutting-edge AI to transform your travel planning experience. Whether you're booking flights or hotels, exploring top destinations, or crafting the perfect itinerary, this agent has you covered — all in one seamless app.
+This intelligent travel agent leverages cutting-edge AI to transform your travel planning experience. Whether you're booking flights or hotels, exploring top destinations, or crafting the perfect itinerary, this agent has you covered all in one seamless app.
 
 ![App Screenshot](https://github.com/Peheni01/AI-Powered-Travel-Planner/blob/809f45db4e314eca4b3e1cd0ed382560bc3be684/app_pic1.png)
 ![App Screenshot](https://github.com/Peheni01/AI-Powered-Travel-Planner/blob/809f45db4e314eca4b3e1cd0ed382560bc3be684/app_pic2.png)
@@ -20,34 +20,27 @@ This intelligent travel agent leverages cutting-edge AI to transform your travel
 - **SerpAPI** – for real-time search and travel data  
 - **Python** – the core logic and integrations
 
-## 📡 API Reference
+## 🔐 API Keys Setup
 
-This AI-powered travel planner integrates several APIs and AI models to provide a seamless and intelligent travel experience.
+To run this AI Travel Planner app, you need to set up the following API keys:
 
-### 🔍 SerpAPI
-- **Purpose**: Fetches real-time web search results including travel guides, places, and services.
-- **Base URL**: `https://serpapi.com/search`
-- **Method**: `GET`
-- **Parameters**:
-  - `q`: Search query (e.g., "top places in Paris")
-  - `engine`: Search engine (e.g., `google`)
-  - `api_key`: Your SerpAPI key
-- **Documentation**: [https://serpapi.com/](https://serpapi.com/)
+1. **Google Gemini API Key**  
+   Used to generate travel plans, optimize itineraries, and create smart checklists using AI.
+   
+   **URL**: [https://aistudio.google.com/apikey](https://aistudio.google.com/apikey)
 
-### 🧠 Gemini API (Google AI)
-- **Purpose**: Natural language processing, itinerary generation, and intelligent response generation.
-- **Model**: `gemini-pro`
-- **Endpoint**: Varies depending on library used (`generativeai`, etc.)
-- **Method**: `POST`
-- **Usage**:
-  - Takes in user preferences and trip details.
-  - Returns suggestions, summaries, or custom responses.
-- **Documentation**: [https://aistudio.google.com/apikey](https://aistudio.google.com/apikey)
+2. **SerpAPI Key**  
+   Used to fetch real-time travel information, locations, and search results.
+   
+   **URL**: [https://serpapi.com/](https://serpapi.com/)
 
-### 🧠 Agno Agents
-- **Purpose**: Facilitates conversational workflows and modular query handling in multi-step planning.
-- **Function**: Manages agent routing, context-aware conversations, and task delegation.
-- **Documentation**: [https://docs.agno.ai/](https://docs.agno.ai/) *(if publicly available)*
+### 🔧 How to Add Your API Keys
+
+1. Add your API keys to the file name agent_app.py in the following format:
+
+   ```env
+   GEMINI_API_KEY=your_gemini_api_key_here
+   SERPAPI_API_KEY=your_serpapi_key_here
 
 ---
 
