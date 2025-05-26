@@ -36,7 +36,7 @@ To run this AI Travel Planner app, you need to set up the following API keys:
 
 ### 🔧 How to Add Your API Keys
 
-1. Add your API keys to the file name agent_app.py in the following format:
+1. Add your API keys to the file name "agent_app.py" in the following format:
 
    ```env
    GEMINI_API_KEY=your_gemini_api_key_here
