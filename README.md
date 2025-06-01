@@ -3,6 +3,8 @@ Your smart travel companion — plan smarter, travel better!
 
 This intelligent travel agent leverages cutting-edge AI to transform your travel planning experience. Whether you're booking flights or hotels, exploring top destinations, or crafting the perfect itinerary, this agent has you covered all in one seamless app.
 
+**Live Demo**: [https://youtube.com/shorts/JDT5_wkGoG0?feature=share](https://youtube.com/shorts/JDT5_wkGoG0?feature=share)
+
 ![App Screenshot](https://github.com/Peheni01/AI-Powered-Travel-Planner/blob/809f45db4e314eca4b3e1cd0ed382560bc3be684/app_pic1.png)
 ![App Screenshot](https://github.com/Peheni01/AI-Powered-Travel-Planner/blob/809f45db4e314eca4b3e1cd0ed382560bc3be684/app_pic2.png)
 
